@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+//This class has some useful helper functions for batch processing
 public class Testing {
     public static void main(String[] args) throws IOException {
         double width;
