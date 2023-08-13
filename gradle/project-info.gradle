@@ -1,0 +1,25 @@
+// -----------------------------------------------------------------------------
+// publishing information
+// -----------------------------------------------------------------------------
+ext.publishing.artifactId =  project.name.toLowerCase()
+ext.publishing.groupId    =  ''
+ext.publishing.versionId  =  '1.0' // ATTENTION: set version in configurator too
+
+ext.publishing.developerName         = 'Logan Neishloss'
+ext.publishing.developerAlias        = 'Logan Neishloss'
+ext.publishing.developerEmail        = 'tun41860@temple.edu'
+ext.publishing.inceptionYear         = '2022'
+
+ext.publishing.bintray.repo          = ''
+ext.publishing.bintray.userOrg       = ''
+ext.publishing.bintray.name          = project.name
+
+ext.publishing.desc                  = 'Biofilm Evaluator'
+ext.publishing.license               = ''
+ext.publishing.licenseUrl            = ''
+ext.publishing.labels                = ['']
+ext.publishing.websiteUrl            = ''
+ext.publishing.issueTrackerUrl       = ''
+ext.publishing.vcsUrl                = ''
+
+ext.publishing.pomName               =  ext.publishing.artifactId
