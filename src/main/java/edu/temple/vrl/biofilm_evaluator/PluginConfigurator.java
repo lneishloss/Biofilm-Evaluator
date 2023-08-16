@@ -7,7 +7,7 @@ import eu.mihosoft.vrl.system.PluginAPI;
 import eu.mihosoft.vrl.system.VPluginConfigurator;
 
 /**
- * @author Logan Neishloss
+ *
  */
 
 public class PluginConfigurator extends VPluginConfigurator {

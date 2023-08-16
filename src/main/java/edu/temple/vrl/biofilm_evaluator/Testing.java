@@ -6,7 +6,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-//This class has some useful helper functions for batch processing
+/**
+ * This class has some useful helper methods for batch processing of biofilm data.
+ * @author Logan Neishloss
+ */
 public class Testing {
     public static void main(String[] args) throws IOException {
         double width;

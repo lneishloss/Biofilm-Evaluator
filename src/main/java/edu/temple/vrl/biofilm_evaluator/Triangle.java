@@ -4,11 +4,12 @@ import javax.vecmath.Vector3d;
 import java.util.ArrayList;
 
 /**
+ * Defines a triangle in a triangular mesh.
  * @author Logan Neishloss
  */
 public class Triangle implements Comparable<Triangle>{
     private final ArrayList<Node> vertices = new ArrayList<>();
-    private Vector3d normalVector = new Vector3d();
+    private final Vector3d normalVector = new Vector3d();
     private final double minX;
     private final double maxX;
     private final double minY;
@@ -18,7 +19,7 @@ public class Triangle implements Comparable<Triangle>{
     int surfaceIndex;
 
     /**
-     * Constructor
+     * Triangle constructor. A Triangle object is defined by three Node objects.
      * @param n1 Node n1
      * @param n2 Node n2
      * @param n3 Node n3

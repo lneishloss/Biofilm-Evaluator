@@ -8,6 +8,7 @@ import java.util.*;
 import edu.gcsc.vrl.densityvis.ImageVoxels;
 
 /**
+ * Class that contains all necessary methods to quantify biofilm mesh and image data.
  * @author Logan Neishloss
  */
 @ComponentInfo(name="BiofilmEvaluator", category = "Custom")
@@ -15,7 +16,7 @@ public class BiofilmEvaluator implements Serializable{
     private final ArrayList<Node> vertices = new ArrayList<>();
     private final ArrayList<Triangle> faces = new ArrayList<>();
     ArrayList<Surface> surfaces = new ArrayList<>();
-    ArrayList<Surface> holes = new ArrayList<>();
+    //ArrayList<Surface> holes = new ArrayList<>();
 
     private int[][][] interiorPoints;
     private boolean[] visited;
@@ -31,8 +32,8 @@ public class BiofilmEvaluator implements Serializable{
     private boolean[][] adjacencyMatrix;
     private ArrayList<HashSet<Integer>> adjacencyList;
 
-    private double[] volumes;
-    private double[] surfaceAreas;
+    //private double[] volumes;
+    //private double[] surfaceAreas;
     //private double[] holesSurfaceAreas;
     double totalVolume = 0.0;
     double totalSurfaceArea = 0.0;
@@ -79,7 +80,7 @@ public class BiofilmEvaluator implements Serializable{
     /**
      * From an .obj and .txt file exported from MorphoGraphX, store each vertex and face into respective ArrayLists.
      * Marginally faster, but tends to not be worth it as datasets large enough for the speedup to be appreciable
-     * are too large to store the adjacency matrix in memory.
+     * may be too large to store the adjacency matrix in memory.
      * @param obj obj file path
      * @param txt txt file path
      * @throws IOException Throws IOException
@@ -173,7 +174,7 @@ public class BiofilmEvaluator implements Serializable{
 
     /**
      * Generates a list of discrete connected surfaces. Marginally faster, but tends to not be worth it as datasets large enough for the speedup to be appreciable
-     * are too large to store the adjacency matrix in memory.
+     * may be too large to store the adjacency matrix in memory.
      * @param size vertex threshold value below which a surface will not be added to the list
      */
     public void generateSurfacesAdjacencyMatrix(int size){
@@ -201,7 +202,7 @@ public class BiofilmEvaluator implements Serializable{
     public void generateSurfaces(int size){
         int count = 1;
         ArrayList<Node> removedNodes = new ArrayList<>();
-        ArrayList<Triangle> removedTriangles = new ArrayList<>();
+        //ArrayList<Triangle> removedTriangles = new ArrayList<>();
         for(Node n : vertices){
             //System.out.println(n.n);
             if(!visited[n.getIndex()]){
@@ -244,9 +245,8 @@ public class BiofilmEvaluator implements Serializable{
     /**
      * Generates a 3D integer array of interior points by counting the number of intersections a line cast from each point in the sample space in the Z-direction
      * has with the faces of the surfaces. An odd number of intersection means a point is in the interior of a surface. Even means exterior.
-     * @return The integer of a point refers to the index of the surface it belongs to. 0 means a point is in the exterior.
      */
-    public int[][][] determineInteriorPoints(){
+    public void determineInteriorPoints(){
         interiorPoints = new int[x][y][z];
         for(int i = 1; i <= z; i++){
             for(int j = 1; j <= x; j++){
@@ -275,13 +275,12 @@ public class BiofilmEvaluator implements Serializable{
             }
             //System.out.println(i);
         }
-        return interiorPoints;
     }
 
     public void computeSurfaceMeasurements(){
         ArrayList<Surface> holes = new ArrayList<>();
         for(Surface s : surfaces){
-            s.calculateSurfaceArea(width, height, depth);
+            s.calculateSurfaceArea();
             s.calculateVolume();
             if(s.getVolume() < 0.0){
                 holes.add(s);
@@ -296,7 +295,7 @@ public class BiofilmEvaluator implements Serializable{
         }
         int i = 1;
         for(Surface s : surfaces){
-            s.calculateSurfaceArea(width, height, depth);
+            s.calculateSurfaceArea();
             s.calculateVolume();
             s.changeIndex(i);
             i++;
@@ -610,8 +609,8 @@ public class BiofilmEvaluator implements Serializable{
     private class Quadtree {
         double minX, maxX, minY, maxY;
         Quadtree c1, c2, c3, c4;
-        private ArrayList<Surface> surfacesSublist = new ArrayList<>();
-        private ArrayList<Triangle> trianglesSublist = new ArrayList<>();
+        private final ArrayList<Surface> surfacesSublist = new ArrayList<>();
+        private final ArrayList<Triangle> trianglesSublist = new ArrayList<>();
         int sizeThreshold;
 
         public Quadtree(double minX, double maxX, double minY, double maxY, ArrayList<Surface> surfaces, int size){
@@ -712,7 +711,7 @@ public class BiofilmEvaluator implements Serializable{
                 c1 = new Quadtree(minX, (minX + maxX) / 2.0, minY, (minY + maxY) / 2.0, surfacesSublist, sizeThreshold);
                 c2 = new Quadtree((minX + maxX) / 2.0, maxX, minY, (minY + maxY) / 2.0, surfacesSublist, sizeThreshold);
                 c3 = new Quadtree(minX, (minX + maxX) / 2.0, (minY + maxY) / 2.0, maxY, surfacesSublist, sizeThreshold);
-                c4 = new Quadtree((minX + maxX) / 2.0, maxX,(minY + maxY) / 2.0, maxY, surfacesSublist, sizeThreshold);
+                c4 = new Quadtree((minX + maxX) / 2.0, maxX, (minY + maxY) / 2.0, maxY, surfacesSublist, sizeThreshold);
             }
         }
 

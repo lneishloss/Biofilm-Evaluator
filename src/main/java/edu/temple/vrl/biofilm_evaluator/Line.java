@@ -3,6 +3,7 @@ package edu.temple.vrl.biofilm_evaluator;
 import javax.vecmath.Vector3d;
 
 /**
+ * Defines a line segment cast along the z-axis.
  * @author Logan Neishloss
  */
 public class Line {
@@ -12,7 +13,7 @@ public class Line {
     double xAtEdge,yAtEdge;
 
     /**
-     * Constructor
+     * Line constructor. A line is defined by an x, y, lower z, and upper z coordinate.
      * @param x x value
      * @param y y value
      * @param z1 z lower bound

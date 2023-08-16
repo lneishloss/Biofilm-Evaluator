@@ -4,6 +4,7 @@ import javax.vecmath.Vector3d;
 import java.util.ArrayList;
 
 /**
+ * Defines a single, contiguous triangular mesh.
  * @author Logan Neishloss
  */
 public class Surface {
@@ -87,6 +88,7 @@ public class Surface {
      */
     public double getMaxZ() { return maxZ; }
 
+
     /**
      *
      * @return number of voxels in surface
@@ -118,7 +120,7 @@ public class Surface {
         }
     }
 
-    public void calculateSurfaceArea(double width, double height, double depth){
+    public void calculateSurfaceArea(){
         surfaceArea = 0;
         for(Triangle t : mesh){
             surfaceArea += t.getArea();

@@ -4,6 +4,7 @@ import javax.vecmath.Vector3d;
 import java.util.ArrayList;
 
 /**
+ * Defines a "Node" object that represents one vertex of the triangular mesh.
  * @author Logan Neishloss
  */
 public class Node implements Comparable<Node>{

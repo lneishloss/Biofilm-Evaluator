@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- * Class to clean up BiofilmEvaluator class by separating all methods related to exporting data
+ * Class to clean up BiofilmEvaluator class by separating all methods related to exporting data.
  * @author Logan Neishloss
  */
 public class DataExport {
