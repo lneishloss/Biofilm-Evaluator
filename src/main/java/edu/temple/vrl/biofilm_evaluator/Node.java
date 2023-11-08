@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Node implements Comparable<Node>{
     int n;
     double x, y, z;
-    double normalx, normaly, normalz;
+    double xNormal, yNormal, zNormal;
     int numConnections;
     ArrayList<Node> connections = new ArrayList<>();
 
@@ -51,9 +51,9 @@ public class Node implements Comparable<Node>{
      * @param z z
      */
     public void setNormal(double x, double y, double z){
-        normalx = x;
-        normaly = y;
-        normalz = z;
+        xNormal = x;
+        yNormal = y;
+        zNormal = z;
     }
 
 
@@ -65,13 +65,16 @@ public class Node implements Comparable<Node>{
         return new Vector3d(x, y, z);
     }
 
+    /*
     /**
      *
      * @return ArrayList of connected nodes
      */
+    /*
     public ArrayList<Node> getConnections(){
         return connections;
     }
+     */
 
     /**
      *
@@ -86,7 +89,7 @@ public class Node implements Comparable<Node>{
      * @return String of normal vector
      */
     public String getNormal(){
-        return "vn " + normalx + " " + normaly + " " + normalz + "\n";
+        return "vn " + xNormal + " " + yNormal + " " + zNormal + "\n";
     }
 
     /**

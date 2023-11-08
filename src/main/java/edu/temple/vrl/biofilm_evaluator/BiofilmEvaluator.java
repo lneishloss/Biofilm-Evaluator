@@ -62,9 +62,9 @@ public class BiofilmEvaluator implements Serializable{
      * @param width width (in image coordinates)
      * @param height height (in image coordinates)
      * @param depth depth (in image coordinates)
-     * @param x x
-     * @param y y
-     * @param z z
+     * @param x size of image in x direction
+     * @param y size of image in y direction
+     * @param z number of image stacks in z direction
      */
     public BiofilmEvaluator(double width, double height, double depth, int x, int y, int z){
         this.width = width;
