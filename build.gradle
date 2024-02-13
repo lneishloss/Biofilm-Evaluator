@@ -122,7 +122,7 @@ task installVRLPlugin(dependsOn: [clean, publicationVRLPluginJar]) {
             from buildDir.getPath() + "/libs/" + rootProject.name + ".vrlplugin"
             into getVRLDir() + "/plugin-updates/"
             include rootProject.name + ".vrlplugin"
-            rename (rootProject.name + ".vrlplugin", rootProject.name + ".jar")
+            rename (rootProject.name + ".vrlplugin", "BiofilmEvaluator.jar")
         }
     }
 }
