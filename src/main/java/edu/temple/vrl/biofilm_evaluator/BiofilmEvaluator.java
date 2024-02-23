@@ -403,9 +403,9 @@ public class BiofilmEvaluator implements Serializable{
     /**
      * Prints data averaged over all rigid structures
      */
-    public void printBiofilmData(){
+    public String printBiofilmData(){
         DataExport d = new DataExport();
-        d.printBiofilmData(interiorDensity, exteriorDensity, totalSurfaceArea, totalVolume, sampleSpaceSize, percentOfSampleSpace);
+        return d.printBiofilmData(interiorDensity, exteriorDensity, totalSurfaceArea, totalVolume, sampleSpaceSize, percentOfSampleSpace);
     }
 
     /**
@@ -416,9 +416,9 @@ public class BiofilmEvaluator implements Serializable{
         d.exportBiofilmData(filename, interiorDensity, exteriorDensity, totalSurfaceArea, totalVolume, sampleSpaceSize, percentOfSampleSpace);
     }
 
-    public void printSurfacesData(){
+    public String printSurfacesData(){
         DataExport d = new DataExport();
-        d.printSurfacesData(surfaces);
+        return d.printSurfacesData(surfaces);
     }
 
     public void exportSurfacesData(String filename) throws IOException{

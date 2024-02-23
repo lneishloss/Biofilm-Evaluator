@@ -21,115 +21,22 @@ public class Testing {
 
         width = 0.2405002;
         height = 0.2405002;
-        depth = 0.2517703;
-        x = 1024;
-        y = 1024;
-        z = 134;
-        timePoints( "102822_t0", 0, width, height, depth, x, y, z, "treated_data");
-
-        width = 0.2405002;
-        height = 0.2405002;
-        depth = 0.2937320;
-        x = 1024;
-        y = 1024;
-        z = 134;
-        timePoints( "102822_t0_1", 0, width, height, depth, x, y, z, "treated_data");
-
-        width = 0.2405002;
-        height = 0.2405002;
-        depth = 0.2937320;
-        x = 1024;
-        y = 1024;
-        z = 134;
-        timePoints( "102822_t0_2", 0, width, height, depth, x, y, z, "treated_data");
-
-        width = 0.2405002;
-        height = 0.2405002;
-        depth = 0.2517703;
-        x = 1024;
-        y = 1024;
-        z = 92;
-        timePoints( "102822_t1", 1, width, height, depth, x, y, z, "treated_data");
-
-        width = 0.2405002;
-        height = 0.2405002;
-        depth = 0.2517703;
-        x = 1024;
-        y = 1024;
-        z = 114;
-        timePoints( "102822_t1_1", 1, width, height, depth, x, y, z, "treated_data");
-
-        width = 0.2405002;
-        height = 0.2405002;
-        depth = 0.2517703;
-        x = 1024;
-        y = 1024;
-        z = 116;
-        timePoints( "102822_t1_2", 1, width, height, depth, x, y, z, "treated_data");
-
-        width = 0.2405002;
-        height = 0.2405002;
-        depth = 0.2517703;
-        x = 1024;
-        y = 1024;
-        z = 111;
-        timePoints( "102822_t1_3", 1, width, height, depth, x, y, z, "treated_data");
-
-        width = 0.2405002;
-        height = 0.2405002;
-        depth = 0.2517703;
-        x = 1024;
-        y = 1024;
-        z = 108;
-        timePoints( "102822_t2", 2, width, height, depth, x, y, z, "treated_data");
-
-        width = 0.2405002;
-        height = 0.2405002;
-        depth = 0.2517703;
-        x = 1024;
-        y = 1024;
-        z = 107;
-        timePoints( "102822_t2_1", 2, width, height, depth, x, y, z, "treated_data");
-
-        width = 0.2405002;
-        height = 0.2405002;
-        depth = 0.2517703;
-        x = 1024;
-        y = 1024;
-        z = 106;
-        timePoints( "102822_t2_2", 2, width, height, depth, x, y, z, "treated_data");
-
-        width = 0.2405002;
-        height = 0.2405002;
-        depth = 0.2517703;
-        x = 1024;
-        y = 1024;
-        z = 137;
-        timePoints( "102822_t3", 3, width, height, depth, x, y, z, "treated_data");
-
-        width = 0.2405002;
-        height = 0.2405002;
-        depth = 0.2517703;
-        x = 1024;
-        y = 1024;
-        z = 71;
-        timePoints( "102822_t3_1", 3, width, height, depth, x, y, z, "treated_data");
-
-        width = 0.2405002;
-        height = 0.2405002;
         depth = 0.5035405;
         x = 1024;
         y = 1024;
-        z = 106;
-        timePoints( "102822_t3_2", 3, width, height, depth, x, y, z, "treated_data");
-
-        width = 0.2405002;
-        height = 0.2405002;
-        depth = 0.2937320;
-        x = 1024;
-        y = 1024;
-        z = 106;
-        timePoints( "102822_t3_3", 3, width, height, depth, x, y, z, "treated_data");
+        z = 98;
+        BiofilmEvaluator be = new BiofilmEvaluator(width, height, depth, x, y, z);
+        String obj = "072222_series6_threshold_30000.obj";
+        String txt = "072222_series6_threshold_30000.txt";
+        String tif = "072222_series6.tif";
+        be.importMeshData(new File(obj), new File(txt));
+        be.importImage(new File(tif));
+        be.generateSurfaces(0);
+        be.generateQuadtree(100);
+        be.computeSurfaceMeasurements();
+        be.determineInteriorPoints();
+        be.computeSurfaceDensities();
+        System.out.println(be.printBiofilmData());
 
 
 

@@ -22,13 +22,12 @@ import java.util.HashSet;
  */
 public class DataExport {
 
-    public void printBiofilmData(double interiorDensity, double exteriorDensity, double totalSurfaceArea, double totalVolume, double sampleSpaceSize, double percentOfSampleSpace){
-        System.out.println("Interior Density, Exterior Density, Total Surface Area, Total Volume, Sample Space, Percent Interior");
-
-        String s = "";
-        s = s.concat(interiorDensity + ", " +  exteriorDensity + ", " + totalSurfaceArea + ", " + totalVolume + ", " + sampleSpaceSize + ", " + percentOfSampleSpace);
-
+    public String printBiofilmData(double interiorDensity, double exteriorDensity, double totalSurfaceArea, double totalVolume, double sampleSpaceSize, double percentOfSampleSpace){
+        String s = "Interior Density, Exterior Density, Total Surface Area, Total Volume, Sample Space, Percent Interior\n";
+        s = s.concat(interiorDensity + ", " +  exteriorDensity + ", " + totalSurfaceArea + ", " + totalVolume + ", " + sampleSpaceSize + ", " + percentOfSampleSpace + "\n");
         System.out.println(s);
+
+        return s;
     }
 
     public void exportBiofilmData(String filename, double interiorDensity, double exteriorDensity, double totalSurfaceArea, double totalVolume, double sampleSpaceSize, double percentOfSampleSpace) throws IOException {
@@ -42,7 +41,7 @@ public class DataExport {
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
 
         String output = "Interior Density, Exterior Density, Total Surface Area, Total Volume, Sample Space, Percent Interior\n";
-        output = output.concat(interiorDensity + ", " +  exteriorDensity + ", " + totalSurfaceArea + ", " + totalVolume + ", " + sampleSpaceSize + ", " + percentOfSampleSpace + "\n");
+        output = output.concat(interiorDensity + ", " +  exteriorDensity + ", " + totalSurfaceArea + ", " + totalVolume + ", " + sampleSpaceSize + ", " + percentOfSampleSpace);
         byte[] bytes = output.getBytes();
         bufferedOutputStream.write(bytes);
 
@@ -50,21 +49,23 @@ public class DataExport {
         outputStream.close();
     }
 
-    public void printSurfacesData(ArrayList<Surface> surfaces){
+    public String printSurfacesData(ArrayList<Surface> surfaces){
+        String output = "";
         for(int i = 1; i < surfaces.size(); i++){
-            System.out.print("Surface Area " + i + ", " + "Volume " + i + ", " + "Density " + i + ", ");
+            output = output.concat("Surface Area " + i + ", " + "Volume " + i + ", " + "Density " + i + ", ");
         }
-        System.out.println("Surface Area " + surfaces.size() + ", " + "Volume " + surfaces.size() + ", " + "Density " + surfaces.size());
+        output = output.concat("Surface Area " + surfaces.size() + ", " + "Volume " + surfaces.size() + ", " + "Density " + surfaces.size() + "\n");
 
         for(Surface s : surfaces){
             if(s.getIndex() != surfaces.size()){
-                System.out.print(s.getSurfaceArea() + ", " + s.getVolume() + ", " + s.getDensity() + ", ");
+                output = output.concat(s.getSurfaceArea() + ", " + s.getVolume() + ", " + s.getDensity() + ", ");
             }
             else{
-                System.out.println(s.getSurfaceArea() + ", " + s.getVolume() + ", " + s.getDensity());
+                output = output.concat(s.getSurfaceArea() + ", " + s.getVolume() + ", " + s.getDensity());
             }
         }
-
+        System.out.println(output);
+        return output;
     }
 
     public void exportSurfacesData(String filename, ArrayList<Surface> surfaces) throws IOException{
