@@ -125,13 +125,12 @@ public class DataExport {
         outputStream.close();
     }
 
-    public String SurfaceDataVerticalVRL(String series, String filename) throws IOException{
+    public String surfaceDataVerticalVRL(String series){
         String output = "";
 
         for(Surface s : surfaces){
             output = output.concat(series + ", " + s.getSurfaceArea() + ", " + s.getVolume() + ", " + s.getDensity() + "\n");
         }
-
         System.out.println(output);
         return output;
     }
@@ -186,7 +185,7 @@ public class DataExport {
         outputStream.close();
     }
 
-    public String allRigidStructuresDataVRL(String filename, String structure) throws IOException{
+    public String allRigidStructuresDataVRL(String structure){
         String output = "";
 
         for(Surface s : surfaces){
