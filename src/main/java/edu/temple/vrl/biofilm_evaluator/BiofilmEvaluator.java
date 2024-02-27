@@ -76,7 +76,6 @@ public class BiofilmEvaluator implements Serializable{
         this.z = z;
     }
 
-
     /**
      * From an .obj and .txt file exported from MorphoGraphX, store each vertex and face into respective ArrayLists.
      * Marginally faster, but tends to not be worth it as datasets large enough for the speedup to be appreciable
@@ -235,7 +234,7 @@ public class BiofilmEvaluator implements Serializable{
      */
     public void exportOBJ(String filename) throws IOException {
         DataExport d = new DataExport();
-        d.exportOBJ(filename, vertices, surfaces);
+        d.exportOBJ(filename, vertices);
     }
 
     public void generateQuadtree(int size){
@@ -405,7 +404,7 @@ public class BiofilmEvaluator implements Serializable{
      */
     public String printBiofilmData(){
         DataExport d = new DataExport();
-        return d.printBiofilmData(interiorDensity, exteriorDensity, totalSurfaceArea, totalVolume, sampleSpaceSize, percentOfSampleSpace);
+        return d.biofilmDataVRL(interiorDensity, exteriorDensity, totalSurfaceArea, totalVolume, sampleSpaceSize, percentOfSampleSpace);
     }
 
     /**
@@ -416,29 +415,12 @@ public class BiofilmEvaluator implements Serializable{
         d.exportBiofilmData(filename, interiorDensity, exteriorDensity, totalSurfaceArea, totalVolume, sampleSpaceSize, percentOfSampleSpace);
     }
 
-    public String printSurfacesData(){
-        DataExport d = new DataExport();
-        return d.printSurfacesData(surfaces);
-    }
-
-    public void exportSurfacesData(String filename) throws IOException{
-        DataExport d = new DataExport();
-        d.exportSurfacesData(filename, surfaces);
-    }
-
-    public void exportSurfacesDataVertically(String s, String filename) throws IOException{
-        DataExport d = new DataExport();
-        d.exportSurfaceDataVertically(s, filename, surfaces);
-    }
-
-    public void exportTimePointsData(String filename, String structure, int timepoint) throws IOException {
-        DataExport d = new DataExport();
-        d.exportTimePointsData(filename, structure, timepoint, surfaces);
-    }
-
-    public void exportVolumeData(String filename, String structure) throws IOException {
-        DataExport d = new DataExport();
-        d.exportVolumeData(filename, structure, surfaces);
+    /**
+     *
+     * @return ArrayList of surfaces
+     */
+    public ArrayList<Surface> getSurfaces(){
+        return surfaces;
     }
 
     /**

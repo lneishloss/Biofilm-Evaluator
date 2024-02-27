@@ -40,7 +40,6 @@ public class Testing {
 
 
 
-
     }
 
     public static void computeThresholds(String s, double width, double height, double depth, int x, int y, int z, String filename) throws IOException {
@@ -67,13 +66,14 @@ public class Testing {
             //be.computeSurfaceDensities();
             //be.exportBiofilmData("biofilms.csv");
             //be.exportSurfacesData("surfaces.csv");
+            DataExport d = new DataExport(be.getSurfaces());
             if(i == 3){
-                be.exportVolumeData(filename + "_30000.csv", s);
+                d.exportAllRigidStructuresData(filename + "_30000.csv", s);
                 numSurfaces30000 = be.surfaces.size();
                 vol30000 = be.totalVolume;
             }
             else{
-                be.exportVolumeData(filename + "_60000.csv", s);
+                d.exportAllRigidStructuresData(filename + "_60000.csv", s);
                 numSurfaces60000 = be.surfaces.size();
                 vol60000 = be.totalVolume;
             }
@@ -107,13 +107,14 @@ public class Testing {
             be.computeSurfaceDensities();
             //be.exportBiofilmData("biofilms.csv");
             //be.exportSurfacesData("surfaces.csv");
+            DataExport d = new DataExport(be.getSurfaces());
             if(i == 3){
-                be.exportTimePointsData(filename + "_30000.csv", s, j);
+                d.exportTimePointsData(filename + "_30000.csv", s, j);
                 numSurfaces30000 = be.surfaces.size();
                 vol30000 = be.totalVolume;
             }
             else{
-                be.exportTimePointsData(filename + "_60000.csv", s, j);
+                d.exportTimePointsData(filename + "_60000.csv", s, j);
                 numSurfaces60000 = be.surfaces.size();
                 vol60000 = be.totalVolume;
             }
@@ -144,11 +145,12 @@ public class Testing {
             //be.computeSurfaceDensities();
             //be.exportBiofilmData("biofilms.csv");
             //be.exportSurfacesData("surfaces.csv");
+            DataExport d = new DataExport(be.getSurfaces());
             if(i == 3){
-                be.exportTimePointsData(filename + "_30000.csv", s, j);
+                d.exportTimePointsData(filename + "_30000.csv", s, j);
             }
             else{
-                be.exportTimePointsData(filename + "_60000.csv", s, j);
+                d.exportTimePointsData(filename + "_60000.csv", s, j);
             }
             //long end = System.nanoTime();
             //System.out.println((end - start) / 1000000000.0 / 60.0);

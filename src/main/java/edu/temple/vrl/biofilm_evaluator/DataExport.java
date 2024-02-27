@@ -21,10 +21,27 @@ import java.util.HashSet;
  * @author Logan Neishloss
  */
 public class DataExport {
+    private ArrayList<Surface> surfaces;
 
-    public String printBiofilmData(double interiorDensity, double exteriorDensity, double totalSurfaceArea, double totalVolume, double sampleSpaceSize, double percentOfSampleSpace){
-        String s = "Interior Density, Exterior Density, Total Surface Area, Total Volume, Sample Space, Percent Interior\n";
-        s = s.concat(interiorDensity + ", " +  exteriorDensity + ", " + totalSurfaceArea + ", " + totalVolume + ", " + sampleSpaceSize + ", " + percentOfSampleSpace + "\n");
+    public DataExport(){
+
+    }
+    public DataExport(ArrayList<Surface> surfaces){
+        this.surfaces = surfaces;
+    }
+
+    /**
+     *
+     * @param interiorDensity
+     * @param exteriorDensity
+     * @param totalSurfaceArea
+     * @param totalVolume
+     * @param sampleSpaceSize
+     * @param percentOfSampleSpace
+     * @return Biofilm data formatted for use in VRL Studio Project.
+     */
+    public String biofilmDataVRL(double interiorDensity, double exteriorDensity, double totalSurfaceArea, double totalVolume, double sampleSpaceSize, double percentOfSampleSpace){
+        String s = interiorDensity + ", " +  exteriorDensity + ", " + totalSurfaceArea + ", " + totalVolume + ", " + sampleSpaceSize + ", " + percentOfSampleSpace + "\n";
         System.out.println(s);
 
         return s;
@@ -49,7 +66,11 @@ public class DataExport {
         outputStream.close();
     }
 
-    public String printSurfacesData(ArrayList<Surface> surfaces){
+    /**
+     *
+     * @return Print data for each surface in the surfaces list, formatted for VRL Studio Project.
+     */
+    public String surfacesDataVRL(){
         String output = "";
         for(int i = 1; i < surfaces.size(); i++){
             output = output.concat("Surface Area " + i + ", " + "Volume " + i + ", " + "Density " + i + ", ");
@@ -68,7 +89,7 @@ public class DataExport {
         return output;
     }
 
-    public void exportSurfacesData(String filename, ArrayList<Surface> surfaces) throws IOException{
+    public void exportSurfacesData(String filename) throws IOException{
         FileOutputStream outputStream;
         if(new File(filename).isFile()){
              outputStream = new FileOutputStream(filename, true);
@@ -104,7 +125,18 @@ public class DataExport {
         outputStream.close();
     }
 
-    public void exportSurfaceDataVertically(String series, String filename, ArrayList<Surface> surfaces) throws IOException{
+    public String SurfaceDataVerticalVRL(String series, String filename) throws IOException{
+        String output = "";
+
+        for(Surface s : surfaces){
+            output = output.concat(series + ", " + s.getSurfaceArea() + ", " + s.getVolume() + ", " + s.getDensity() + "\n");
+        }
+
+        System.out.println(output);
+        return output;
+    }
+
+    public void exportSurfaceDataVertical(String series, String filename) throws IOException{
         FileOutputStream outputStream;
         String output = "";
         byte[] bytes;
@@ -129,7 +161,7 @@ public class DataExport {
         outputStream.close();
     }
 
-    public void exportTimePointsData(String filename, String structure, int timepoint, ArrayList<Surface> surfaces) throws IOException{
+    public void exportTimePointsData(String filename, String structure, int timepoint) throws IOException{
         FileOutputStream outputStream;
         String output = "";
         byte[] bytes;
@@ -154,7 +186,17 @@ public class DataExport {
         outputStream.close();
     }
 
-    public void exportVolumeData(String filename, String structure, ArrayList<Surface> surfaces) throws IOException{
+    public String allRigidStructuresDataVRL(String filename, String structure) throws IOException{
+        String output = "";
+
+        for(Surface s : surfaces){
+            output = output.concat(structure + ", " + s.getSurfaceArea() + ", " + s.getVolume() + "\n");
+        }
+
+        return output;
+    }
+
+    public void exportAllRigidStructuresData(String filename, String structure) throws IOException{
         FileOutputStream outputStream;
         String output = "";
         byte[] bytes;
@@ -179,7 +221,7 @@ public class DataExport {
         outputStream.close();
     }
 
-    public void exportOBJ(String filename, ArrayList<Node> vertices, ArrayList<Surface> surfaces) throws IOException{
+    public void exportOBJ(String filename, ArrayList<Node> vertices) throws IOException{
         FileOutputStream outputStream = new FileOutputStream(filename);
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
 

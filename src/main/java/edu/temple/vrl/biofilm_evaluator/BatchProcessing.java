@@ -88,13 +88,14 @@ public class BatchProcessing {
             //be.computeSurfaceDensities();
             //be.exportBiofilmData("biofilms.csv");
             //be.exportSurfacesData("surfaces.csv");
+            DataExport d = new DataExport(be.getSurfaces());
             if(i == 3){
-                be.exportVolumeData(export_filename + "_30000.csv", import_filename);
+                d.exportAllRigidStructuresData(export_filename + "_30000.csv", import_filename);
                 numSurfaces30000 = be.surfaces.size();
                 vol30000 = be.totalVolume;
             }
             else{
-                be.exportVolumeData(export_filename + "_60000.csv", import_filename);
+                d.exportAllRigidStructuresData(export_filename + "_60000.csv", import_filename);
                 numSurfaces60000 = be.surfaces.size();
                 vol60000 = be.totalVolume;
             }
@@ -141,13 +142,14 @@ public class BatchProcessing {
             be.computeSurfaceDensities();
             //be.exportBiofilmData("biofilms.csv");
             //be.exportSurfacesData("surfaces.csv");
+            DataExport d = new DataExport(be.getSurfaces());
             if(i == 3){
-                be.exportTimePointsData(export_filename + "_30000.csv", import_filename, t);
+                d.exportTimePointsData(export_filename + "_30000.csv", import_filename, t);
                 numSurfaces30000 = be.surfaces.size();
                 vol30000 = be.totalVolume;
             }
             else{
-                be.exportTimePointsData(export_filename + "_60000.csv", import_filename, t);
+                d.exportTimePointsData(export_filename + "_60000.csv", import_filename, t);
                 numSurfaces60000 = be.surfaces.size();
                 vol60000 = be.totalVolume;
             }
