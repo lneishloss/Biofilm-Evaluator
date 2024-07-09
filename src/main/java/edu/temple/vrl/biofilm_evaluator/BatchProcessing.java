@@ -90,12 +90,12 @@ public class BatchProcessing {
             //be.exportSurfacesData("surfaces.csv");
             DataExport d = new DataExport(be.getSurfaces());
             if(i == 3){
-                d.exportAllRigidStructuresData(export_filename + "_30000.csv", import_filename);
+                d.exportSurfacesData(export_filename + "_30000.csv");
                 numSurfaces30000 = be.surfaces.size();
                 vol30000 = be.totalVolume;
             }
             else{
-                d.exportAllRigidStructuresData(export_filename + "_60000.csv", import_filename);
+                d.exportSurfacesData(export_filename + "_60000.csv");
                 numSurfaces60000 = be.surfaces.size();
                 vol60000 = be.totalVolume;
             }

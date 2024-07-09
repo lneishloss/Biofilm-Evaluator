@@ -36,10 +36,7 @@ public class Testing {
         be.computeSurfaceMeasurements();
         be.determineInteriorPoints();
         be.computeSurfaceDensities();
-        System.out.println(be.printBiofilmData());
-
-
-
+        System.out.println(be.printRigidStructuresData());
     }
 
     public static void computeThresholds(String s, double width, double height, double depth, int x, int y, int z, String filename) throws IOException {
@@ -68,12 +65,12 @@ public class Testing {
             //be.exportSurfacesData("surfaces.csv");
             DataExport d = new DataExport(be.getSurfaces());
             if(i == 3){
-                d.exportAllRigidStructuresData(filename + "_30000.csv", s);
+                d.exportSurfacesData(filename + "_30000.csv");
                 numSurfaces30000 = be.surfaces.size();
                 vol30000 = be.totalVolume;
             }
             else{
-                d.exportAllRigidStructuresData(filename + "_60000.csv", s);
+                d.exportSurfacesData(filename + "_60000.csv");
                 numSurfaces60000 = be.surfaces.size();
                 vol60000 = be.totalVolume;
             }

@@ -71,21 +71,11 @@ public class DataExport {
      * @return Print data for each surface in the surfaces list, formatted for VRL Studio Project.
      */
     public String surfacesDataVRL(){
-        String output = "";
-        for(int i = 1; i < surfaces.size(); i++){
-            output = output.concat("Surface Area " + i + ", " + "Volume " + i + ", " + "Density " + i + ", ");
+        String output = "Structure, Surface Area, Volume, Density\n";
+        for(int i = 1; i <= surfaces.size(); i++){
+            output = output.concat(i + ", " + surfaces.get(i - 1).getSurfaceArea() + ", " + surfaces.get(i - 1).getVolume() + ", " + surfaces.get(i - 1).getDensity() + "\n");
         }
-        output = output.concat("Surface Area " + surfaces.size() + ", " + "Volume " + surfaces.size() + ", " + "Density " + surfaces.size() + "\n");
-
-        for(Surface s : surfaces){
-            if(s.getIndex() != surfaces.size()){
-                output = output.concat(s.getSurfaceArea() + ", " + s.getVolume() + ", " + s.getDensity() + ", ");
-            }
-            else{
-                output = output.concat(s.getSurfaceArea() + ", " + s.getVolume() + ", " + s.getDensity());
-            }
-        }
-        System.out.println(output);
+        //System.out.println(output);
         return output;
     }
 
@@ -99,61 +89,12 @@ public class DataExport {
         }
         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
 
-        String output = "";
-        for(int i = 1; i < surfaces.size(); i++){
-            output = output.concat("Surface Area " + i + ", " + "Volume " + i + ", " + "Density " + i + ", ");
+        String output = "Structure, Surface Area, Volume, Density\n";
+        for(int i = 1; i <= surfaces.size(); i++){
+            output = output.concat(i + ", " + surfaces.get(i - 1).getSurfaceArea() + ", " + surfaces.get(i - 1).getVolume() + ", " + surfaces.get(i - 1).getDensity() + "\n");
         }
-        output = output.concat("Surface Area " + surfaces.size() + ", " + "Volume " + surfaces.size() + ", " + "Density " + surfaces.size() + "\n");
 
         byte[] bytes = output.getBytes();
-        bufferedOutputStream.write(bytes);
-
-        output = "";
-        for(Surface s : surfaces){
-            if(s.getIndex() != surfaces.size()){
-                output = output.concat(s.getSurfaceArea() + ", " + s.getVolume() + ", " + s.getDensity() + ", ");
-            }
-            else{
-                output = output.concat(s.getSurfaceArea() + ", " + s.getVolume() + ", " + s.getDensity() + "\n");
-            }
-        }
-
-        bytes = output.getBytes();
-        bufferedOutputStream.write(bytes);
-
-        bufferedOutputStream.close();
-        outputStream.close();
-    }
-
-    public String surfaceDataVerticalVRL(String series){
-        String output = "";
-
-        for(Surface s : surfaces){
-            output = output.concat(series + ", " + s.getSurfaceArea() + ", " + s.getVolume() + ", " + s.getDensity() + "\n");
-        }
-        System.out.println(output);
-        return output;
-    }
-
-    public void exportSurfaceDataVertical(String series, String filename) throws IOException{
-        FileOutputStream outputStream;
-        String output = "";
-        byte[] bytes;
-
-        if(new File(filename).isFile()){
-            outputStream = new FileOutputStream(filename, true);
-        }
-        else{
-            outputStream = new FileOutputStream(filename);
-            output = "Structure, Surface Area, Volume, Density\n";
-        }
-        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-
-        for(Surface s : surfaces){
-            output = output.concat(series + ", " + s.getSurfaceArea() + ", " + s.getVolume() + ", " + s.getDensity() + "\n");
-        }
-
-        bytes = output.getBytes();
         bufferedOutputStream.write(bytes);
 
         bufferedOutputStream.close();
@@ -176,41 +117,6 @@ public class DataExport {
 
         for(Surface s : surfaces){
             output = output.concat(structure + ", " + timepoint + ", " + s.getSurfaceArea() + ", " + s.getVolume() + ", " + s.getDensity() + "\n");
-        }
-
-        bytes = output.getBytes();
-        bufferedOutputStream.write(bytes);
-
-        bufferedOutputStream.close();
-        outputStream.close();
-    }
-
-    public String allRigidStructuresDataVRL(String structure){
-        String output = "";
-
-        for(Surface s : surfaces){
-            output = output.concat(structure + ", " + s.getSurfaceArea() + ", " + s.getVolume() + "\n");
-        }
-
-        return output;
-    }
-
-    public void exportAllRigidStructuresData(String filename, String structure) throws IOException{
-        FileOutputStream outputStream;
-        String output = "";
-        byte[] bytes;
-
-        if(new File(filename).isFile()){
-            outputStream = new FileOutputStream(filename, true);
-        }
-        else{
-            outputStream = new FileOutputStream(filename);
-            output = "Structure, Surface Area, Volume\n";
-        }
-        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-
-        for(Surface s : surfaces){
-            output = output.concat(structure + ", " + s.getSurfaceArea() + ", " + s.getVolume() + "\n");
         }
 
         bytes = output.getBytes();

@@ -1,10 +1,12 @@
 package edu.temple.vrl.biofilm_evaluator;
 
+import edu.temple.vrl.biofilm_evaluator.components.ExportAllRigidStructuresComponent;
+import edu.temple.vrl.biofilm_evaluator.components.ExportDataComponent;
+import edu.temple.vrl.biofilm_evaluator.components.ImportMeshComponent;
 import eu.mihosoft.vrl.io.VJarUtil;
+import eu.mihosoft.vrl.io.VersionInfo;
 import eu.mihosoft.vrl.lang.visual.CompletionUtil;
-import eu.mihosoft.vrl.system.InitPluginAPI;
-import eu.mihosoft.vrl.system.PluginAPI;
-import eu.mihosoft.vrl.system.VPluginConfigurator;
+import eu.mihosoft.vrl.system.*;
 
 /**
  *
@@ -12,14 +14,27 @@ import eu.mihosoft.vrl.system.VPluginConfigurator;
 
 public class PluginConfigurator extends VPluginConfigurator {
 
+    public PluginConfigurator(){
+        setIdentifier(new PluginIdentifier("BiofilmEvaluator", "0.1"));
+        setDescription("BiofilmEvaluator VRL Plugin");
+        setCopyrightInfo("BiofilmEvaluator-Plugin", "(c) placeholder", "www...", "placeholder", "placeholder text");
+        addDependency(new PluginDependency("VRL", "0.4.4.0.3", VersionInfo.UNDEFINED));
+    }
+
     @Override
     public void register(PluginAPI api) {
-        // register plugin with canvas
+        if (api instanceof VPluginAPI) {
+            VPluginAPI vapi = (VPluginAPI) api;
+
+            vapi.addComponent(ImportMeshComponent.class);
+            vapi.addComponent(ExportDataComponent.class);
+            vapi.addComponent(ExportAllRigidStructuresComponent.class);
+        }
     }
 
     @Override
     public void unregister(PluginAPI api) {
-        // nothing to unregister
+
     }
 
     @Override

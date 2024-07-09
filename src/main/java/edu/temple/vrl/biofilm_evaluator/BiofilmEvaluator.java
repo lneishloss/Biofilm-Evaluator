@@ -415,6 +415,11 @@ public class BiofilmEvaluator implements Serializable{
         d.exportBiofilmData(filename, interiorDensity, exteriorDensity, totalSurfaceArea, totalVolume, sampleSpaceSize, percentOfSampleSpace);
     }
 
+    public String printRigidStructuresData(){
+        DataExport d = new DataExport(surfaces);
+        return d.surfacesDataVRL();
+    }
+
     /**
      *
      * @return ArrayList of surfaces
