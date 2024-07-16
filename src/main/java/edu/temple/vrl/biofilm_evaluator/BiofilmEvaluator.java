@@ -4,6 +4,10 @@ import eu.mihosoft.vrl.annotation.ComponentInfo;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import edu.gcsc.vrl.densityvis.ImageVoxels;
 
@@ -201,9 +205,7 @@ public class BiofilmEvaluator implements Serializable{
     public void generateSurfaces(int size){
         int count = 1;
         ArrayList<Node> removedNodes = new ArrayList<>();
-        //ArrayList<Triangle> removedTriangles = new ArrayList<>();
         for(Node n : vertices){
-            //System.out.println(n.n);
             if(!visited[n.getIndex()]){
                 ArrayList<Node> connected = getConnectedComponentsAdjacencyList(n.getIndex());
                 Surface s = new Surface(getFacesFromNodes(connected, faces), count);
@@ -247,17 +249,23 @@ public class BiofilmEvaluator implements Serializable{
      */
     public void determineInteriorPoints(){
         interiorPoints = new int[x][y][z];
-        for(int i = 1; i <= z; i++){
-            for(int j = 1; j <= x; j++){
-                for(int k = 1; k <= y; k++){
-                    Line l = new Line((j - x / 2.0) * width, (k - y / 2.0) * height, (i - z / 2.0) * depth, (5 + z / 2.0) * depth);
-                    ArrayList<Triangle> triangleSublist = quadtree.getTrianglesSublist((j - x / 2.0) * width, (k - y / 2.0) * height);
+        for(int i = 1; i <= x; i++){
+            double xPos = (i - x / 2.0) * width;
+            for(int j = 1; j <= y; j++){
+                double yPos = (j - y / 2.0) * height;
+
+                //Retrieve relevant triangles
+                ArrayList<Triangle> triangleSublist = quadtree.getTrianglesSublist(xPos, yPos);
+                for(int k = 1; k <= z; k++){
+                    Line l = new Line(xPos, yPos, (k - z / 2.0) * depth, (5 + z / 2.0) * depth);
                     int intersections = 0;
                     int[] indices = new int[triangleSublist.size()];
                     int intersectedIndex;
+
+                    //Count intersections
                     for(Triangle t : triangleSublist){
-                        if ((j - x / 2.0) * width > t.getMinX() && (j - x / 2.0) * width < t.getMaxX()) {
-                            if ((k - y / 2.0) * height > t.getMinY() && (k - y / 2.0) * height < t.getMaxY()) {
+                        if (xPos > t.getMinX() && xPos < t.getMaxX()) {
+                            if (yPos > t.getMinY() && yPos < t.getMaxY()) {
                                 if (l.intersection(t)) {
                                     indices[intersections] = t.surfaceIndex;
                                     intersections++;
@@ -265,15 +273,19 @@ public class BiofilmEvaluator implements Serializable{
                             }
                         }
                     }
+
+                    //Determine interior points
                     if(intersections % 2 != 0){
                         intersectedIndex = getOddOccurringIndex(indices, intersections);
-                        interiorPoints[j - 1][k - 1][i - 1] = intersectedIndex;
+                        interiorPoints[i - 1][j - 1][k - 1] = intersectedIndex;
                         surfaces.get(intersectedIndex - 1).addVoxel();
                     }
                 }
             }
             //System.out.println(i);
         }
+
+
     }
 
     public void computeSurfaceMeasurements(){
@@ -510,12 +522,12 @@ public class BiofilmEvaluator implements Serializable{
     private ArrayList<Triangle> getFacesFromNodes(ArrayList<Node> connected, ArrayList<Triangle> faces){
         ArrayList<Triangle> connectedFaces = new ArrayList<>();
 
+        Set<Node> nodeSet = new HashSet<>(connected);
+
         for(Triangle t : faces){
             Node n = t.getVertices().get(0);
-            for(Node m : connected){
-                if(n.equals(m)){
-                    connectedFaces.add(t);
-                }
+            if(nodeSet.contains(n)){
+                connectedFaces.add(t);
             }
         }
 
@@ -600,6 +612,7 @@ public class BiofilmEvaluator implements Serializable{
         private final ArrayList<Triangle> trianglesSublist = new ArrayList<>();
         int sizeThreshold;
 
+
         public Quadtree(double minX, double maxX, double minY, double maxY, ArrayList<Surface> surfaces, int size){
             this.minX = minX;
             this.maxX = maxX;
@@ -611,95 +624,69 @@ public class BiofilmEvaluator implements Serializable{
 
             sizeThreshold = size;
 
-            subdivide();
+            if(trianglesSublist.size() > sizeThreshold) {
+                subdivide();
+            }
         }
 
+
         public ArrayList<Surface> getSurfacesSublist(double x, double y){
-            if(x >= (minX + maxX) / 2){
-                if(y >= (minY + maxY / 2)){
-                    if(trianglesSublist.size() > sizeThreshold){
+            if(trianglesSublist.size() > sizeThreshold){
+                double midX = (minX + maxX) / 2.0;
+                double midY = (minY + maxY) / 2.0;
+
+                if(x >= midX){
+                    if(y >= midY){
                         return c4.getSurfacesSublist(x, y);
-                    }
-                    else{
-                        return surfacesSublist;
-                    }
-                }
-                else{
-                    if(trianglesSublist.size() > sizeThreshold){
+                    } else{
                         return c2.getSurfacesSublist(x, y);
                     }
-                    else{
-                        return surfacesSublist;
-                    }
-                }
-            }
-            else{
-                if(y >= (minY + maxY / 2)){
-                    if(trianglesSublist.size() > sizeThreshold){
+                } else{
+                    if(y >= midY){
                         return c3.getSurfacesSublist(x, y);
-                    }
-                    else{
-                        return surfacesSublist;
-                    }
-                }
-                else{
-                    if(trianglesSublist.size() > sizeThreshold){
+                    } else{
                         return c1.getSurfacesSublist(x, y);
                     }
-                    else{
-                        return surfacesSublist;
-                    }
                 }
+
+            } else{
+                return surfacesSublist;
             }
         }
 
         public ArrayList<Triangle> getTrianglesSublist(double x, double y){
-            if(x >= (minX + maxX) / 2.0){
-                if(y >= (minY + maxY) / 2.0){
-                    if(trianglesSublist.size() > sizeThreshold){
+            if(trianglesSublist.size() > sizeThreshold){
+                double midX = (minX + maxX) / 2.0;
+                double midY = (minY + maxY) / 2.0;
+
+                if(x >= midX){
+                    if(y >= midY){
                         return c4.getTrianglesSublist(x, y);
-                    }
-                    else{
-                        return trianglesSublist;
-                    }
-                }
-                else{
-                    if(trianglesSublist.size() > sizeThreshold){
+                    } else{
                         return c2.getTrianglesSublist(x, y);
                     }
-                    else{
-                        return trianglesSublist;
-                    }
-                }
-            }
-            else{
-                if(y >= (minY + maxY) / 2.0){
-                    if(trianglesSublist.size() > sizeThreshold){
+                } else{
+                    if(y >= midY){
                         return c3.getTrianglesSublist(x, y);
-                    }
-                    else{
-                        return trianglesSublist;
-                    }
-                }
-                else{
-                    if(trianglesSublist.size() > sizeThreshold){
+                    } else{
                         return c1.getTrianglesSublist(x, y);
                     }
-                    else{
-                        return trianglesSublist;
-                    }
                 }
+
+            } else{
+                return trianglesSublist;
             }
         }
 
 
         private void subdivide(){
-            if(trianglesSublist.size() > sizeThreshold){
-                c1 = new Quadtree(minX, (minX + maxX) / 2.0, minY, (minY + maxY) / 2.0, surfacesSublist, sizeThreshold);
-                c2 = new Quadtree((minX + maxX) / 2.0, maxX, minY, (minY + maxY) / 2.0, surfacesSublist, sizeThreshold);
-                c3 = new Quadtree(minX, (minX + maxX) / 2.0, (minY + maxY) / 2.0, maxY, surfacesSublist, sizeThreshold);
-                c4 = new Quadtree((minX + maxX) / 2.0, maxX, (minY + maxY) / 2.0, maxY, surfacesSublist, sizeThreshold);
-            }
+            double midX = (minX + maxX) / 2.0;
+            double midY = (minY + maxY) / 2.0;
+
+            c1 = new Quadtree(minX, midX, minY, midY, surfacesSublist, sizeThreshold);
+            c2 = new Quadtree(midX, maxX, minY, midY, surfacesSublist, sizeThreshold);
+            c3 = new Quadtree(minX, midX, midY, maxY, surfacesSublist, sizeThreshold);
+            c4 = new Quadtree(midX, maxX, midY, maxY, surfacesSublist, sizeThreshold);
         }
 
         private void reduceSurfaces(ArrayList<Surface> surfaces){

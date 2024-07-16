@@ -25,18 +25,12 @@ public class Testing {
         x = 1024;
         y = 1024;
         z = 98;
-        BiofilmEvaluator be = new BiofilmEvaluator(width, height, depth, x, y, z);
+
         String obj = "072222_series6_threshold_30000.obj";
         String txt = "072222_series6_threshold_30000.txt";
         String tif = "072222_series6.tif";
-        be.importMeshData(new File(obj), new File(txt));
-        be.importImage(new File(tif));
-        be.generateSurfaces(0);
-        be.generateQuadtree(100);
-        be.computeSurfaceMeasurements();
-        be.determineInteriorPoints();
-        be.computeSurfaceDensities();
-        System.out.println(be.printRigidStructuresData());
+
+        printMethodTimes(width, height, depth, x, y, z, obj, txt, tif);
     }
 
     public static void computeThresholds(String s, double width, double height, double depth, int x, int y, int z, String filename) throws IOException {
@@ -175,6 +169,74 @@ public class Testing {
 
         bufferedOutputStream.close();
         outputStream.close();
+    }
+
+    public static void printMethodTimes(double width, double height, double depth, int x, int y, int z, String obj, String txt, String tif) throws IOException {
+        long init = 0;
+        long importMesh = 0;
+        long importImage = 0;
+        long genSurfaces = 0;
+        long genQuadtree = 0;
+        long compSurface = 0;
+        long detInt = 0;
+        long compDens = 0;
+        long print = 0;
+        long startTime, endTime;
+
+        startTime = System.currentTimeMillis();
+        BiofilmEvaluator be = new BiofilmEvaluator(width, height, depth, x, y, z);
+        endTime = System.currentTimeMillis();
+        init = endTime - startTime;
+
+        startTime = System.currentTimeMillis();
+        be.importMeshData(new File(obj), new File(txt));
+        endTime = System.currentTimeMillis();
+        importMesh = endTime - startTime;
+
+        startTime = System.currentTimeMillis();
+        be.importImage(new File(tif));
+        endTime = System.currentTimeMillis();
+        importImage = endTime - startTime;
+
+        startTime = System.currentTimeMillis();
+        be.generateSurfaces(0);
+        endTime = System.currentTimeMillis();
+        genSurfaces = endTime - startTime;
+
+        startTime = System.currentTimeMillis();
+        be.generateQuadtree(100);
+        endTime = System.currentTimeMillis();
+        genQuadtree = endTime - startTime;
+
+        startTime = System.currentTimeMillis();
+        be.computeSurfaceMeasurements();
+        endTime = System.currentTimeMillis();
+        compSurface = endTime - startTime;
+
+        startTime = System.currentTimeMillis();
+        be.determineInteriorPoints();
+        endTime = System.currentTimeMillis();
+        detInt = endTime - startTime;
+
+        startTime = System.currentTimeMillis();
+        be.computeSurfaceDensities();
+        endTime = System.currentTimeMillis();
+        compDens = endTime - startTime;
+
+        startTime = System.currentTimeMillis();
+        System.out.println(be.printRigidStructuresData());
+        endTime = System.currentTimeMillis();
+        print = endTime - startTime;
+
+        System.out.println("Init: " + init);
+        System.out.println("Import Mesh: " + importMesh);
+        System.out.println("Import Image: " + importImage);
+        System.out.println("Generate Surfaces: " + genSurfaces);
+        System.out.println("Generate Quadtree: " + genQuadtree);
+        System.out.println("Compute Surface Measurements: " + compSurface);
+        System.out.println("Determine Interior Points: " + detInt);
+        System.out.println("Compute Surface Densities: " + compDens);
+        System.out.println("Print: " + print);
     }
 
 }
