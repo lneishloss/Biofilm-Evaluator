@@ -30,7 +30,25 @@ public class Testing {
         String txt = "072222_series6_threshold_30000.txt";
         String tif = "072222_series6.tif";
 
-        printMethodTimes(width, height, depth, x, y, z, obj, txt, tif);
+        BiofilmEvaluator be = new BiofilmEvaluator(width, height, depth, x, y, z);
+        be.importMeshData(new File(obj), new File(txt));
+        be.generateSurfaces(0);
+        //be.exportOBJ(s + "_threshold_" + threshold.toString() + "_cleaned.obj");
+        be.generateQuadtree(100);
+        be.computeSurfaceMeasurements();
+        be.determineInteriorPoints();
+        be.importImage(new File(tif));
+        be.computeSurfaceDensities();
+        //be.exportBiofilmData("biofilms.csv");
+        //be.exportSurfacesData("surfaces.csv");
+        be.printBiofilmData();
+
+        be.exportInteriorMap();
+        be.exportCellDensities();
+        be.exportOBJ("meshOutput.obj");
+
+        be.resetData();
+
     }
 
     public static void computeThresholds(String s, double width, double height, double depth, int x, int y, int z, String filename) throws IOException {

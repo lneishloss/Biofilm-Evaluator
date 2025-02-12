@@ -1,8 +1,9 @@
 package edu.temple.vrl.biofilm_evaluator;
 
-import edu.temple.vrl.biofilm_evaluator.components.ExportAllRigidStructuresComponent;
-import edu.temple.vrl.biofilm_evaluator.components.ExportDataComponent;
+import edu.temple.vrl.biofilm_evaluator.components.ExportAllRigidStructuresDataComponent;
+import edu.temple.vrl.biofilm_evaluator.components.ExportDensityDataComponent;
 import edu.temple.vrl.biofilm_evaluator.components.ImportMeshComponent;
+import edu.temple.vrl.biofilm_evaluator.components.ExportAllDataComponent;
 import eu.mihosoft.vrl.io.VJarUtil;
 import eu.mihosoft.vrl.io.VersionInfo;
 import eu.mihosoft.vrl.lang.visual.CompletionUtil;
@@ -27,8 +28,9 @@ public class PluginConfigurator extends VPluginConfigurator {
             VPluginAPI vapi = (VPluginAPI) api;
 
             vapi.addComponent(ImportMeshComponent.class);
-            vapi.addComponent(ExportDataComponent.class);
-            vapi.addComponent(ExportAllRigidStructuresComponent.class);
+            vapi.addComponent(ExportDensityDataComponent.class);
+            vapi.addComponent(ExportAllRigidStructuresDataComponent.class);
+            vapi.addComponent(ExportAllDataComponent.class);
         }
     }
 

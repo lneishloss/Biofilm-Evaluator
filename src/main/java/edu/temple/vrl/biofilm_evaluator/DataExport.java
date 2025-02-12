@@ -203,6 +203,48 @@ public class DataExport {
         writer.dispose();
     }
 
+    public void exportCellDensities(int[][][] cellDensities, int x, int y, int z) throws IOException{
+        BufferedImage[] images = new BufferedImage[z];
+        for(int k = 0; k < z; k++){
+            int count = 0;
+            byte[] bytes = new byte[x * y];
+            for(int j = 0; j < y; j++){
+                for(int i = 0; i < x; i++){
+                    if(cellDensities[k][i][j] > 0){
+                        bytes[count] = (byte)cellDensities[k][i][j];
+                        //count++;
+                    }
+                    count++;
+                }
+            }
+            BufferedImage image = new BufferedImage(x, y, BufferedImage.TYPE_BYTE_GRAY);
+            byte[] array = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+            System.arraycopy(bytes, 0, array, 0, array.length);
+            image.setData(Raster.createRaster(image.getSampleModel(), new DataBufferByte(array, array.length), new Point()));
+            images[k] = image;
+        }
+
+        FileOutputStream fos = new FileOutputStream("cellDensities.tif");
+        ImageWriter writer = ImageIO.getImageWritersByFormatName("TIFF").next();
+
+        try(ImageOutputStream output = ImageIO.createImageOutputStream(fos)){
+            writer.setOutput(output);
+
+            ImageWriteParam params = writer.getDefaultWriteParam();
+            params.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+
+            writer.prepareWriteSequence(null);
+
+            for(int k = 0; k < z; k++){
+                writer.writeToSequence(new IIOImage(images[k], null, null), params);
+            }
+
+            writer.endWriteSequence();
+        }
+
+        writer.dispose();
+    }
+
     private ArrayList<Triangle> getTrianglesFromSurfaces(ArrayList<Surface> surfaces){
         HashSet<Triangle> faces = new HashSet<>();
         for(Surface s : surfaces){

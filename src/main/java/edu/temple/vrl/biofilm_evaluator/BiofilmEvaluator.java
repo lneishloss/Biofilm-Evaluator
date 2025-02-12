@@ -235,7 +235,7 @@ public class BiofilmEvaluator implements Serializable{
      * @throws IOException Throws IOException
      */
     public void exportOBJ(String filename) throws IOException {
-        DataExport d = new DataExport();
+        DataExport d = new DataExport(surfaces);
         d.exportOBJ(filename, vertices);
     }
 
@@ -447,6 +447,36 @@ public class BiofilmEvaluator implements Serializable{
     public void exportInteriorMap() throws IOException {
         DataExport d = new DataExport();
         d.exportInteriorMap(interiorPoints, x, y, z);
+    }
+
+    /**
+     * Exports interior map to a grayscale image file
+     * @throws IOException throws IOException
+     */
+    public void exportCellDensities() throws IOException {
+        DataExport d = new DataExport();
+        d.exportCellDensities(cellDensity, x, y, z);
+    }
+
+    /**
+     * Makes sure data is cleared before volume calculations
+     */
+    public void resetData(){
+        final ArrayList<Node> vertices = new ArrayList<>();
+        final ArrayList<Triangle> faces = new ArrayList<>();
+        ArrayList<Surface> surfaces = new ArrayList<>();
+
+        totalVolume = 0.0;
+        totalSurfaceArea = 0.0;
+
+        interiorDensity = 0.0;
+        exteriorDensity = 0.0;
+        interiorCellDensity = 0.0;
+        exteriorCellDensity = 0.0;
+        wightedInteriorH202 = 0.0;
+        weightedExteriorH202 = 0.0;
+
+        count = 0;
     }
 
     /**

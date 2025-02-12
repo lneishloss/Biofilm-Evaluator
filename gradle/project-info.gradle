@@ -3,11 +3,11 @@
 // -----------------------------------------------------------------------------
 ext.publishing.artifactId =  project.name.toLowerCase()
 ext.publishing.groupId    =  ''
-ext.publishing.versionId  =  '1.0' // ATTENTION: set version in configurator too
+ext.publishing.versionId  =  '0.1' // ATTENTION: set version in configurator too
 
 ext.publishing.developerName         = 'Logan Neishloss'
 ext.publishing.developerAlias        = 'Logan Neishloss'
-ext.publishing.developerEmail        = 'tun41860@temple.edu'
+ext.publishing.developerEmail        = 'lneishloss@gmail.com'
 ext.publishing.inceptionYear         = '2022'
 
 ext.publishing.bintray.repo          = ''
